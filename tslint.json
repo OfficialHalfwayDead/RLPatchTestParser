@@ -1,0 +1,23 @@
+{
+    "extends": "tslint:latest",
+    "rules": {
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "curly": [
+            true,
+            "ignore-same-line"
+        ],
+        "new-parens": true,
+        "no-console": false,
+        "eofline": false,
+        "no-consecutive-blank-lines": false,
+        "prefer-function-over-method": true,
+        "one-line": false,
+        "interface-name":false,
+        "member-ordering":false,
+        "no-empty":false,
+        "max-line-length":false
+    }
+}

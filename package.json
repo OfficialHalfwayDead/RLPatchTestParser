@@ -1,0 +1,32 @@
+{
+  "name": "RLPatchTestParser",
+  "version": "1.0.0",
+  "description": "Parses the results from patch tests and outputs the important parts.",
+  "main": "dist/index",
+  "types": "dist/index",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "csv": "^5.0.1",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OfficialHalfwayDead/RLPatchTestParser.git"
+  },
+  "keywords": [],
+  "author": "HalfwayDead",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/OfficialHalfwayDead/RLPatchTestParser/issues"
+  },
+  "homepage": "https://github.com/OfficialHalfwayDead/RLPatchTestParser#readme"
+}
