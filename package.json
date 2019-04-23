@@ -6,6 +6,7 @@
   "types": "dist/index",
   "dependencies": {},
   "devDependencies": {
+    "@types/csv-parse": "^1.1.11",
     "@types/node": "^10.12.18",
     "csv": "^5.0.1",
     "nodemon": "^1.18.9",
@@ -15,7 +16,7 @@
   "scripts": {
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
