@@ -1,4 +1,4 @@
-class Vector {
+export class Vector {
     private X: number;
     private Y: number;
     private Z: number;
@@ -52,6 +52,12 @@ class Vector {
         return Vector.add(v1, Vector.add(v2, v3));
     }
 
+    toFixed(precision: number): string {
+        return "Vector {\n  X: " + this.X.toFixed(precision)
+            + ",\n  Y: " + this.Y.toFixed(precision)
+            + ",\n  Z: " + this.Z.toFixed(precision) + " }";
+    }
+
     static add(v1: Vector, v2: Vector): Vector {
         return new Vector(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
     }
@@ -72,9 +78,18 @@ class Vector {
         return new Vector(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
     }
 
+    static fromStatMap(statName: String, map: Map<string, number>): Vector {
+        let placeholder = map.get(statName + ".X");
+        const x: number = (placeholder === undefined) ? 0 : placeholder;
+        placeholder = map.get(statName + ".Y");
+        const y: number = (placeholder === undefined) ? 0 : placeholder;
+        placeholder = map.get(statName + ".Z");
+        const z: number = (placeholder === undefined) ? 0 : placeholder;
+        return new Vector(x, y, z);
+    }
 }
 
-class Quaternion {
+export class Quaternion {
     private X: number;
     private Y: number;
     private Z: number;
@@ -111,7 +126,7 @@ class Quaternion {
         return new Quaternion(this.X, this.Y, this.Z, this.W);
     }
 
-    invertedCopy(): Quaternion{
+    invertedCopy(): Quaternion {
         return new Quaternion(-this.X, -this.Y, -this.Z, this.W);
     }
 
@@ -136,9 +151,21 @@ class Quaternion {
         return new EulerAngle(yaw, pitch, roll);
     }
 
+    static fromStatMap(statName: String, map: Map<string, number>): Quaternion {
+        let placeholder = map.get(statName + ".X");
+        const x: number = (placeholder === undefined) ? 0 : placeholder;
+        placeholder = map.get(statName + ".Y");
+        const y: number = (placeholder === undefined) ? 0 : placeholder;
+        placeholder = map.get(statName + ".Z");
+        const z: number = (placeholder === undefined) ? 0 : placeholder;
+        placeholder = map.get(statName + ".W");
+        const w: number = (placeholder === undefined) ? 0 : placeholder;
+        return new Quaternion(x, y, z, w);
+    }
+
 }
 
-class EulerAngle {
+export class EulerAngle {
     private yaw: number;
     private pitch: number;
     private roll: number;
@@ -186,10 +213,10 @@ class EulerAngle {
 
 }
 
-function degrees(x: number): number {
+export function degrees(x: number): number {
     return x * 180 / Math.PI;
 }
 
-function radians(x: number): number {
+export function radians(x: number): number {
     return x * Math.PI / 180;
 }

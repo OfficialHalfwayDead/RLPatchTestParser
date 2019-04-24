@@ -3,6 +3,7 @@ declare class Hitbox {
     private offset;
     constructor(extent: Vector, offset: Vector);
     copy(): Hitbox;
+    equal(other: Hitbox): boolean;
     getExtent(): Vector;
     getOffset(): Vector;
     getSize(): Vector;
@@ -14,6 +15,7 @@ declare class Wheel {
     private restingSuspensionDistance;
     constructor(radius: number, localOffset: Vector, presetOffset: Vector, restingSuspensionDistance: number);
     copy(): Wheel;
+    equal(other: Wheel): boolean;
     getRadius(): number;
     getOffset(): Vector;
     getRestingSuspensionDistance(): number;
@@ -25,6 +27,7 @@ declare class Wheels {
     private backRight;
     constructor(frontLeft: Wheel, frontRight: Wheel, backLeft: Wheel, backRight: Wheel);
     copy(): Wheels;
+    equal(other: Wheels): boolean;
 }
 declare class Car {
     private name;
@@ -49,4 +52,6 @@ declare class HitboxPreset {
     private wheels;
     private cars;
     constructor(car: Car);
+    doesCarMatch(car: Car): boolean;
+    addCar(car: Car): void;
 }

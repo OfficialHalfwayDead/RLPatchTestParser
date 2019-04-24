@@ -7,6 +7,9 @@ class Hitbox {
     copy() {
         return new Hitbox(this.extent, this.offset);
     }
+    equal(other) {
+        return (this.extent.equal(other.extent) && this.offset.equal(other.offset));
+    }
     getExtent() {
         return this.extent.copy();
     }
@@ -27,6 +30,11 @@ class Wheel {
     copy() {
         return new Wheel(this.radius, this.localOffset, this.presetOffset, this.restingSuspensionDistance);
     }
+    equal(other) {
+        return (this.radius === other.radius
+            && this.getOffset().equal(other.getOffset())
+            && this.restingSuspensionDistance === other.restingSuspensionDistance);
+    }
     getRadius() {
         return this.radius;
     }
@@ -46,6 +54,12 @@ class Wheels {
     }
     copy() {
         return new Wheels(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
+    }
+    equal(other) {
+        return (this.frontLeft.equal(other.frontLeft)
+            && this.frontRight.equal(other.frontRight)
+            && this.backLeft.equal(other.backLeft)
+            && this.backRight.equal(other.backRight));
     }
 }
 class Car {
@@ -78,7 +92,7 @@ class Car {
         return this.wheels.copy();
     }
     isOfPreset(preset) {
-        return true;
+        return preset.doesCarMatch(this);
     }
 }
 class HitboxPreset {
@@ -89,5 +103,14 @@ class HitboxPreset {
         this.restingLocation = car.getRestingLocation();
         this.restingRotation = car.getRestingRotation();
         this.wheels = car.getWheels();
+    }
+    doesCarMatch(car) {
+        return (this.hitbox.equal(car.getHitbox())
+            && this.restingLocation.equal(car.getRestingLocation())
+            && this.restingRotation.equal(car.getRestingRotation())
+            && this.wheels.equal(car.getWheels()));
+    }
+    addCar(car) {
+        this.cars.push(car);
     }
 }

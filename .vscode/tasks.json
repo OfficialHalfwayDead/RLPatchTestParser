@@ -7,10 +7,20 @@
             "type": "npm",
             "script": "build:live",
             "problemMatcher": [
-                "$tsc",
+                "$tsc-watch",
                 "$tslint5",
                 "$node-sass"
             ]
+        },
+        {
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": [
+                "$tsc",
+                "$tslint5",
+                "$node-sass"
+            ],
+            "isBackground": true
         }
     ]
 }
