@@ -1,3 +1,5 @@
+import { userInfo } from "os";
+
 export class Vector {
     private X: number;
     private Y: number;
@@ -169,11 +171,13 @@ export class EulerAngle {
     private yaw: number;
     private pitch: number;
     private roll: number;
+    private degrees: boolean;
 
-    constructor(yaw: number, pitch: number, roll: number) {
+    constructor(yaw: number, pitch: number, roll: number, bDegrees: boolean = false) {
         this.yaw = yaw;
         this.pitch = pitch;
         this.roll = roll;
+        this.degrees = false;
     }
 
     equal(r: EulerAngle): boolean {
@@ -196,7 +200,33 @@ export class EulerAngle {
         return new EulerAngle(this.yaw, this.pitch, this.roll);
     }
 
+    useDegrees(): EulerAngle {
+        if (!this.degrees) {
+            this.yaw = degrees(this.yaw);
+            this.pitch = degrees(this.pitch);
+            this.roll = degrees(this.roll);
+            this.degrees = true;
+        }
+        return this;
+    }
+
+    useRadians(): EulerAngle {
+        if (this.degrees) {
+            this.yaw = radians(this.yaw);
+            this.pitch = radians(this.pitch);
+            this.roll = radians(this.roll);
+            this.degrees = false;
+        }
+        return this;
+    }
+
     toQuat(): Quaternion {
+        let deg = false;
+        if (this.degrees) {  // if angle currently in degrees, we need to transform to radians first
+            deg = true;
+            this.useRadians();
+        }
+
         const cy = Math.cos(this.yaw * 0.5);
         const sy = Math.sin(this.yaw * 0.5);
         const cp = Math.cos(this.pitch * 0.5);
@@ -204,11 +234,19 @@ export class EulerAngle {
         const cr = Math.cos(this.roll * 0.5);
         const sr = Math.sin(this.roll * 0.5);
 
+        if (deg) this.useDegrees(); // return to degrees, if that was previous setting
+
         return new Quaternion(
             cy * cp * cr + sy * sp * sr,
             cy * cp * sr - sy * sp * cr,
             sy * cp * sr + cy * sp * cr,
             sy * cp * cr - cy * sp * sr);
+    }
+
+    toFixed(precision: number): string {
+        return "Angle {\n  Yaw: " + this.yaw.toFixed(precision)
+            + ",\n  Pitch: " + this.pitch.toFixed(precision)
+            + ",\n  Roll: " + this.roll.toFixed(precision) + " }";
     }
 
 }

@@ -1,4 +1,4 @@
-import { Vector, Quaternion } from './primitives';
+import { Vector, Quaternion, EulerAngle } from './primitives';
 class Hitbox {
     private extent: Vector;
     private offset: Vector;
@@ -91,6 +91,22 @@ class Wheels {
         this.backRight = backRight.copy();
     }
 
+    getFrontLeft(): Wheel {
+        return this.frontLeft.copy();
+    }
+
+    getFrontRight(): Wheel {
+        return this.frontRight.copy();
+    }
+
+    getBackLeft(): Wheel {
+        return this.backLeft.copy();
+    }
+
+    getBackRight(): Wheel {
+        return this.backRight.copy();
+    }
+
     copy(): Wheels {
         return new Wheels(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
     }
@@ -168,7 +184,39 @@ export class Car {
     }
 }
 
-class HitboxPreset {
+export interface HumanReadableWheel {
+    Radius: number;
+    LocationOffset: Vector;
+    GroundSuspensionDistance: number;
+}
+
+export interface HumanReadableWheels {
+    FrontLeft: HumanReadableWheel;
+    FrontRight: HumanReadableWheel;
+    BackLeft: HumanReadableWheel;
+    BackRight: HumanReadableWheel;
+}
+
+export interface HumanReadableCar {
+    Name: string;
+    HitboxSize: Vector;
+    HitboxOffset: Vector;
+    MeshOffset: Vector;
+    GroundRotation: EulerAngle;
+    GroundLocation: Vector;
+    Wheels: HumanReadableWheels;
+}
+
+export interface HumanReadableHitbox {
+    HitboxSize: Vector;
+    HitboxOffset: Vector;
+    GroundRotation: EulerAngle;
+    GroundLocation: Vector;
+    Wheels: HumanReadableWheels;
+    Cars: Array<string>;
+}
+
+export class HitboxPreset {
     private hitbox: Hitbox;
     private restingRotation: Quaternion;
     private restingLocation: Vector;
@@ -181,6 +229,28 @@ class HitboxPreset {
         this.restingLocation = car.getRestingLocation();
         this.restingRotation = car.getRestingRotation();
         this.wheels = car.getWheels();
+    }
+
+    getHitbox(): Hitbox {
+        return this.hitbox.copy();
+    }
+
+    getRestingLocation(): Vector {
+        return this.restingLocation.copy();
+    }
+
+    getRestingRotation(): Quaternion {
+        return this.restingRotation.copy();
+    }
+
+    getWheels(): Wheels {
+        return this.wheels.copy();
+    }
+
+    getCarNames(): Array<string> {
+        const output = new Array<string>();
+        this.cars.forEach((car) => output.push(car.getName()));
+        return output;
     }
 
     doesCarMatch(car: Car): boolean {
