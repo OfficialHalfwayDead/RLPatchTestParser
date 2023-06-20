@@ -63,9 +63,13 @@ carFileList.forEach((filename) => {
 
 function allCarsRead(): void {
     cars.sort(function (a, b) {
-        var nameA = a.getName().toLowerCase(), nameB = b.getName().toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
+        // var nameA = a.getName().toLowerCase(), nameB = b.getName().toLowerCase();
+        // if (nameA < nameB) return -1;
+        // if (nameA > nameB) return 1;
+        let idA = a.getID();
+        let idB = b.getID();
+        if (idA < idB) return -1;
+        if (idA > idB) return 1; 
         return 0;
     });
 
