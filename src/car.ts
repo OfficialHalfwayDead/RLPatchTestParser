@@ -65,7 +65,7 @@ class Wheel {
         return this.restingSuspensionDistance;
     }
 
-    static fromStatMap(wheelName: String, map: Map<string, number>): Wheel {
+    static fromStatMap(wheelName: string, map: Map<string, number>): Wheel {
         let placeholder = map.get(wheelName + ".WheelRadius");
         const radius: number = (placeholder === undefined) ? 0 : placeholder;
         const localOffset = Vector.fromStatMap(wheelName + ".LocalRestPosition", map);
@@ -121,14 +121,16 @@ class Wheels {
 
 export class Car {
     private name: string;
+    private id: number;
     private hitbox: Hitbox;
     private restingVisualLocation: Vector;
     private restingRotation: Quaternion;
     private restingLocation: Vector;
     private wheels: Wheels;
 
-    constructor(name: string, hitbox: Hitbox, visualLocation: Vector, restingRotation: Quaternion, restingLocation: Vector, wheels: Wheels) {
+    constructor(name: string, id: number, hitbox: Hitbox, visualLocation: Vector, restingRotation: Quaternion, restingLocation: Vector, wheels: Wheels) {
         this.name = name;
+        this.id = Math.round(id);
         this.hitbox = hitbox.copy();
         this.restingVisualLocation = visualLocation.copy();
         this.restingRotation = restingRotation.copy();
@@ -144,8 +146,12 @@ export class Car {
         return this.name;
     }
 
+    getID(): number {
+        return this.id;
+    }
+
     getVisualOffset(): Vector {
-        let unadjustedOffset = Vector.subtract(this.restingVisualLocation, this.restingLocation);
+        const unadjustedOffset = Vector.subtract(this.restingVisualLocation, this.restingLocation);
         const rotation = this.restingRotation.invertedCopy();
         return unadjustedOffset.rotatedCopy(rotation);
     }
@@ -166,7 +172,7 @@ export class Car {
         return preset.doesCarMatch(this);
     }
 
-    static fromStatMap(name: string, map: Map<string, number>): Car {
+    static fromStatMap(name: string, id: number, map: Map<string, number>): Car {
         const location = Vector.fromStatMap("car.Location", map);
         const rotation = Quaternion.fromStatMap("car.Quaternion", map);
         const extent = Vector.fromStatMap("car.LocalCollisionExtent", map);
@@ -180,7 +186,7 @@ export class Car {
             Wheel.fromStatMap("car.Wheel3", map));
 
 
-        return new Car(name, new Hitbox(extent, offset), visualLocation, rotation, location, wheels);
+        return new Car(name, id, new Hitbox(extent, offset), visualLocation, rotation, location, wheels);
     }
 }
 
@@ -199,6 +205,7 @@ export interface HumanReadableWheels {
 
 export interface HumanReadableCar {
     Name: string;
+    ID: string;
     HitboxSize: Vector;
     HitboxOffset: Vector;
     MeshOffset: Vector;
@@ -213,7 +220,7 @@ export interface HumanReadableHitbox {
     GroundRotation: EulerAngle;
     GroundLocation: Vector;
     Wheels: HumanReadableWheels;
-    Cars: Array<string>;
+    Cars: string[];
 }
 
 export class HitboxPreset {
@@ -247,7 +254,7 @@ export class HitboxPreset {
         return this.wheels.copy();
     }
 
-    getCarNames(): Array<string> {
+    getCarNames(): string[] {
         const output = new Array<string>();
         this.cars.forEach((car) => output.push(car.getName()));
         return output;

@@ -80,7 +80,7 @@ export class Vector {
         return new Vector(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
     }
 
-    static fromStatMap(statName: String, map: Map<string, number>): Vector {
+    static fromStatMap(statName: string, map: Map<string, number>): Vector {
         let placeholder = map.get(statName + ".X");
         const x: number = (placeholder === undefined) ? 0 : placeholder;
         placeholder = map.get(statName + ".Y");
@@ -153,7 +153,7 @@ export class Quaternion {
         return new EulerAngle(yaw, pitch, roll);
     }
 
-    static fromStatMap(statName: String, map: Map<string, number>): Quaternion {
+    static fromStatMap(statName: string, map: Map<string, number>): Quaternion {
         let placeholder = map.get(statName + ".X");
         const x: number = (placeholder === undefined) ? 0 : placeholder;
         placeholder = map.get(statName + ".Y");

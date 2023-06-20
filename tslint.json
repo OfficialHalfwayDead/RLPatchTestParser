@@ -18,6 +18,7 @@
         "interface-name":false,
         "member-ordering":false,
         "no-empty":false,
-        "max-line-length":false
+        "max-line-length":false,
+        "max-classes-per-file":false
     }
 }

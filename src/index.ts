@@ -12,8 +12,8 @@ const outHitboxes = "/Hitboxes/"
 
 
 
-function mapFromTupleList(list: Array<Array<string>>): Map<string, number> {
-    let output = new Map<string, number>();
+function mapFromTupleList(list: string[][]): Map<string, number> {
+    const output = new Map<string, number>();
     for (const tuple of list) {
         if (tuple.length === 2) {
             assert(!output.has(tuple[0]));
@@ -49,7 +49,8 @@ carFileList.forEach((filename) => {
             }
 
             const map = mapFromTupleList(output); // type any but should be Array<Array<string>>
-            const car = Car.fromStatMap(name, map);
+            const id = map.get("ID") ?? -1;
+            const car = Car.fromStatMap(name, id, map);
             cars.push(car);
             if (carFileList.length === cars.length) {
                 allCarsRead();
@@ -104,6 +105,7 @@ function saveHumanReadableCarStats(precision: number): void {
         };
         let readableCar: HumanReadableCar = {
             Name: car.getName(),
+            ID: car.getID().toFixed(0),
             HitboxSize: car.getHitbox().getSize(),
             HitboxOffset: car.getHitbox().getOffset(),
             MeshOffset: car.getVisualOffset(),
